@@ -1,38 +1,24 @@
 {
   "name": "maze-runner",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "prettier": "prettier . --write"
-  },
-  "dependencies": {
-    "@stitches/react": "^1.2.8",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "immer": "^10.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "zod": "^3.23.8"
+    "build": "turbo build",
+    "build:clean": "turbo build:clean",
+    "build:fe": "turbo build --filter=frontend",
+    "build:be": "turbo build --filter=server",
+    "dev": "turbo dev",
+    "dev:fe": "turbo dev --filter=frontend",
+    "dev:be": "turbo dev --filter=server",
+    "start": "turbo start",
+    "start:fe": "turbo start --filter=frontend",
+    "start:be": "turbo start --filter=server",
+    "lint": "turbo lint",
+    "graph:build": "turbo build --graph",
+    "prettier": "turbo prettier"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
-    "prettier": "^3.2.5",
-    "serve": "^14.2.3",
-    "shx": "^0.3.4",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vite-tsconfig-paths": "^4.3.2"
-  }
+    "prettier": "^3.1.1",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@8.15.7"
 }

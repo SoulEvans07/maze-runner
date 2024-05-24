@@ -4,83 +4,72 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
+dependencies:
+  '@stitches/react':
+    specifier: ^1.2.8
+    version: 1.2.8(react@18.3.1)
+  class-variance-authority:
+    specifier: ^0.7.0
+    version: 0.7.0
+  clsx:
+    specifier: ^2.1.1
+    version: 2.1.1
+  immer:
+    specifier: ^10.1.1
+    version: 10.1.1
+  react:
+    specifier: ^18.2.0
+    version: 18.3.1
+  react-dom:
+    specifier: ^18.2.0
+    version: 18.3.1(react@18.3.1)
+  zod:
+    specifier: ^3.23.8
+    version: 3.23.8
 
-  .:
-    devDependencies:
-      prettier:
-        specifier: ^3.1.1
-        version: 3.2.5
-      turbo:
-        specifier: latest
-        version: 1.13.3
-
-  apps/frontend:
-    dependencies:
-      '@stitches/react':
-        specifier: ^1.2.8
-        version: 1.2.8(react@18.3.1)
-      class-variance-authority:
-        specifier: ^0.7.0
-        version: 0.7.0
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      immer:
-        specifier: ^10.1.1
-        version: 10.1.1
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-    devDependencies:
-      '@types/react':
-        specifier: ^18.2.66
-        version: 18.3.3
-      '@types/react-dom':
-        specifier: ^18.2.22
-        version: 18.3.0
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^7.2.0
-        version: 7.10.0(@typescript-eslint/parser@7.10.0)(eslint@8.57.0)(typescript@5.4.5)
-      '@typescript-eslint/parser':
-        specifier: ^7.2.0
-        version: 7.10.0(eslint@8.57.0)(typescript@5.4.5)
-      '@vitejs/plugin-react':
-        specifier: ^4.2.1
-        version: 4.3.0(vite@5.2.11)
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      eslint-plugin-react-hooks:
-        specifier: ^4.6.0
-        version: 4.6.2(eslint@8.57.0)
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.6
-        version: 0.4.7(eslint@8.57.0)
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
-      serve:
-        specifier: ^14.2.3
-        version: 14.2.3
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
-      typescript:
-        specifier: ^5.2.2
-        version: 5.4.5
-      vite:
-        specifier: ^5.2.0
-        version: 5.2.11
-      vite-tsconfig-paths:
-        specifier: ^4.3.2
-        version: 4.3.2(typescript@5.4.5)(vite@5.2.11)
+devDependencies:
+  '@types/react':
+    specifier: ^18.2.66
+    version: 18.3.3
+  '@types/react-dom':
+    specifier: ^18.2.22
+    version: 18.3.0
+  '@typescript-eslint/eslint-plugin':
+    specifier: ^7.2.0
+    version: 7.10.0(@typescript-eslint/parser@7.10.0)(eslint@8.57.0)(typescript@5.4.5)
+  '@typescript-eslint/parser':
+    specifier: ^7.2.0
+    version: 7.10.0(eslint@8.57.0)(typescript@5.4.5)
+  '@vitejs/plugin-react':
+    specifier: ^4.2.1
+    version: 4.3.0(vite@5.2.11)
+  eslint:
+    specifier: ^8.57.0
+    version: 8.57.0
+  eslint-plugin-react-hooks:
+    specifier: ^4.6.0
+    version: 4.6.2(eslint@8.57.0)
+  eslint-plugin-react-refresh:
+    specifier: ^0.4.6
+    version: 0.4.7(eslint@8.57.0)
+  prettier:
+    specifier: ^3.2.5
+    version: 3.2.5
+  serve:
+    specifier: ^14.2.3
+    version: 14.2.3
+  shx:
+    specifier: ^0.3.4
+    version: 0.3.4
+  typescript:
+    specifier: ^5.2.2
+    version: 5.4.5
+  vite:
+    specifier: ^5.2.0
+    version: 5.2.11
+  vite-tsconfig-paths:
+    specifier: ^4.3.2
+    version: 4.3.2(typescript@5.4.5)(vite@5.2.11)
 
 packages:
 
@@ -2381,66 +2370,6 @@ packages:
         optional: true
     dependencies:
       typescript: 5.4.5
-    dev: true
-
-  /turbo-darwin-64@1.13.3:
-    resolution: {integrity: sha512-glup8Qx1qEFB5jerAnXbS8WrL92OKyMmg5Hnd4PleLljAeYmx+cmmnsmLT7tpaVZIN58EAAwu8wHC6kIIqhbWA==}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /turbo-darwin-arm64@1.13.3:
-    resolution: {integrity: sha512-/np2xD+f/+9qY8BVtuOQXRq5f9LehCFxamiQnwdqWm5iZmdjygC5T3uVSYuagVFsZKMvX3ycySwh8dylGTl6lg==}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /turbo-linux-64@1.13.3:
-    resolution: {integrity: sha512-G+HGrau54iAnbXLfl+N/PynqpDwi/uDzb6iM9hXEDG+yJnSJxaHMShhOkXYJPk9offm9prH33Khx2scXrYVW1g==}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /turbo-linux-arm64@1.13.3:
-    resolution: {integrity: sha512-qWwEl5VR02NqRyl68/3pwp3c/olZuSp+vwlwrunuoNTm6JXGLG5pTeme4zoHNnk0qn4cCX7DFrOboArlYxv0wQ==}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /turbo-windows-64@1.13.3:
-    resolution: {integrity: sha512-Nudr4bRChfJzBPzEmpVV85VwUYRCGKecwkBFpbp2a4NtrJ3+UP1VZES653ckqCu2FRyRuS0n03v9euMbAvzH+Q==}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /turbo-windows-arm64@1.13.3:
-    resolution: {integrity: sha512-ouJCgsVLd3icjRLmRvHQDDZnmGzT64GBupM1Y+TjtYn2LVaEBoV6hicFy8x5DUpnqdLy+YpCzRMkWlwhmkX7sQ==}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /turbo@1.13.3:
-    resolution: {integrity: sha512-n17HJv4F4CpsYTvKzUJhLbyewbXjq1oLCi90i5tW1TiWDz16ML1eDG7wi5dHaKxzh5efIM56SITnuVbMq5dk4g==}
-    hasBin: true
-    optionalDependencies:
-      turbo-darwin-64: 1.13.3
-      turbo-darwin-arm64: 1.13.3
-      turbo-linux-64: 1.13.3
-      turbo-linux-arm64: 1.13.3
-      turbo-windows-64: 1.13.3
-      turbo-windows-arm64: 1.13.3
     dev: true
 
   /type-check@0.4.0:
