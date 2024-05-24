@@ -6,6 +6,7 @@
   "tabWidth": 2,
   "singleQuote": true,
   "jsxSingleQuote": false,
+  "quoteProps": "consistent",
   "overrides": [
     {
       "files": ["**/*.css", "**/*.scss", "**/*.html"],
