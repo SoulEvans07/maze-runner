@@ -50,14 +50,32 @@ function isSolid(cell: Cell) {
   return solids.includes(cell.type);
 }
 
+function isOutOfBounds(pos: Pos) {
+  if (pos.x < 0 || pos.x >= size.w) return true;
+  if (pos.y < 0 || pos.y >= size.h) return true;
+  return false;
+}
+
 function step(map: MapData, prev: Pos, dir: DirName): Pos {
   const next = {
-    x: clamp(prev.x + directions[dir].x, 0, size.h - 1),
-    y: clamp(prev.y + directions[dir].y, 0, size.h - 1),
+    x: prev.x + directions[dir].x,
+    y: prev.y + directions[dir].y,
   };
 
+  if (isOutOfBounds(next)) return prev;
   if (isSolid(map[next.y][next.x])) return prev;
   return next;
+}
+
+function dash(map: MapData, prev: Pos, dir: DirName): Pos {
+  const next = {
+    x: prev.x + directions[dir].x,
+    y: prev.y + directions[dir].y,
+  };
+
+  if (isOutOfBounds(next)) return prev;
+  if (isSolid(map[next.y][next.x])) return prev;
+  return dash(map, next, dir);
 }
 
 export function Map() {
@@ -69,16 +87,16 @@ export function Map() {
     switch (ev.key.toLowerCase()) {
       case controls.alt.up:
       case controls.up:
-        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'up') }));
+        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'up') }));
       case controls.alt.right:
       case controls.right:
-        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'right') }));
+        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'right') }));
       case controls.alt.down:
       case controls.down:
-        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'down') }));
+        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'down') }));
       case controls.alt.left:
       case controls.left:
-        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'left') }));
+        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'left') }));
     }
   });
 
