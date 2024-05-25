@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
+
 import { styled } from '~/styles';
 import { useGlobalListener } from '~/utils/hooks/event-listener';
 import { mapData } from '~/data/map';
+import { Tile } from './tiles';
 
 const cellSize = '2rem';
 const size = {
@@ -28,7 +30,7 @@ function clamp(n: number, min: number, max: number) {
 }
 
 export function Map() {
-  const [player, updatePlayer] = useState<PlayerProps>({ x: 0, y: 0 });
+  const [player, updatePlayer] = useState<PlayerProps>({ x: 1, y: 1 });
 
   useGlobalListener('keydown', ev => {
     if (ev.repeat) return;
@@ -71,7 +73,7 @@ export function Map() {
       {mapData.map((row, r) => (
         <Row key={r} id={`row-${r}`}>
           {row.map((cell, c) => (
-            <Cell key={`${r}-${c}`} data={cell} x={c} y={r} />
+            <Tile key={`${r}-${c}`} data={cell} x={c} y={r} />
           ))}
         </Row>
       ))}
@@ -111,67 +113,3 @@ const Row = styled('div', {
   gridAutoColumns: cellSize,
   gridAutoFlow: 'column',
 });
-
-function CellBase(props: CellProps) {
-  const { data, children, x, y, className } = props;
-  return (
-    <div className={className} data-cell={data.type}>
-      <span>
-        [{x + 1}, {y + 1}]
-      </span>
-      {children}
-    </div>
-  );
-}
-
-const EmptyCell = styled(CellBase, {
-  size: '2rem',
-  backgroundColor: '#eee',
-  color: 'black',
-  fontSize: '0.4rem',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
-
-const WallCell = styled(EmptyCell, {
-  backgroundColor: '#555',
-  border: '1px solid #505050',
-});
-
-type CellMap = {
-  empty: {};
-  wall: {};
-};
-
-type CellType = keyof CellMap;
-type CellPropMap = {
-  [T in CellType]: React.PropsWithChildren<{
-    data: CellMap[T] & { type: T };
-    x: number;
-    y: number;
-    className?: string;
-  }>;
-};
-export type CellProps = CellPropMap[CellType];
-export type CellComp<T extends CellType> = React.FC<CellPropMap[T]>;
-
-type CellTypesMap = {
-  [T in CellType]: CellComp<T>;
-};
-
-const CellTypes: CellTypesMap = {
-  empty: props => <EmptyCell {...props} />,
-  wall: props => <WallCell {...props} />,
-};
-
-// NOTE: typescript is not clever enough for this, so here is a function...
-function getCellComp<T extends CellType>(type: T): CellComp<T> {
-  return CellTypes[type];
-}
-
-function Cell<T extends CellType>(props: CellPropMap[T]) {
-  const { data } = props;
-  const Comp = useMemo(() => getCellComp(data.type), [data.type]);
-  return <Comp {...props} />;
-}
