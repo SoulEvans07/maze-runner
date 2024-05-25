@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { styled } from '~/styles';
+import { useGlobalListener } from '~/utils/hooks/event-listener';
 
 const size = 16;
 const cellSize = '2rem';
@@ -7,10 +8,57 @@ const mapData = new Array(size)
   .fill(null)
   .map(() => new Array(size).fill(null).map(() => ({ type: 'empty' as const })));
 
+const controls = {
+  up: 'w',
+  right: 'd',
+  down: 's',
+  left: 'a',
+
+  alt: {
+    up: 'ArrowUp'.toLowerCase(),
+    right: 'ArrowRight'.toLowerCase(),
+    down: 'ArrowDown'.toLowerCase(),
+    left: 'ArrowLeft'.toLowerCase(),
+  },
+};
+
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
+
 export function Map() {
+  const [player, updatePlayer] = useState<PlayerProps>({ x: 0, y: 0 });
+
+  useGlobalListener('keydown', ev => {
+    if (ev.repeat) return;
+
+    switch (ev.key.toLowerCase()) {
+      case controls.alt.up:
+      case controls.up: {
+        updatePlayer(prev => ({ ...prev, y: clamp(prev.y - 1, 0, size - 1) }));
+        break;
+      }
+      case controls.alt.right:
+      case controls.right: {
+        updatePlayer(prev => ({ ...prev, x: clamp(prev.x + 1, 0, size - 1) }));
+        break;
+      }
+      case controls.alt.down:
+      case controls.down: {
+        updatePlayer(prev => ({ ...prev, y: clamp(prev.y + 1, 0, size - 1) }));
+        break;
+      }
+      case controls.alt.left:
+      case controls.left: {
+        updatePlayer(prev => ({ ...prev, x: clamp(prev.x - 1, 0, size - 1) }));
+        break;
+      }
+    }
+  });
+
   return (
     <Grid>
-      <Player x={3} y={6} />
+      <Player {...player} />
       {mapData.map((row, r) => (
         <Row key={r} id={`row-${r}`}>
           {row.map((cell, c) => (
