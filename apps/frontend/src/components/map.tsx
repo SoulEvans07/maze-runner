@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
 
 import { styled } from '~/styles';
@@ -8,6 +8,7 @@ import { Tile } from './tiles';
 import { Cell, CellType } from './tiles/types';
 
 const moveSpeed = 50; // per tile
+const crudeCoyoteTime = moveSpeed * 0.5;
 
 type MapData = Cell[][];
 
@@ -34,10 +35,6 @@ const controls = {
   },
 };
 
-function clamp(n: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, n));
-}
-
 type Pos = { x: number; y: number };
 
 const directions = {
@@ -59,17 +56,6 @@ function isOutOfBounds(pos: Pos) {
   return false;
 }
 
-function step(map: MapData, prev: Pos, dir: DirName): Pos {
-  const next = {
-    x: prev.x + directions[dir].x,
-    y: prev.y + directions[dir].y,
-  };
-
-  if (isOutOfBounds(next)) return prev;
-  if (isSolid(map[next.y][next.x])) return prev;
-  return next;
-}
-
 function dash(map: MapData, prev: Pos, dir: DirName, dist = 0): { pos: Pos; dist: number } {
   const next = {
     x: prev.x + directions[dir].x,
@@ -86,7 +72,7 @@ export function Map() {
   const stop = () => updatePlayer(prev => ({ ...prev, moving: false }));
 
   useEffect(() => {
-    const handler = setTimeout(() => void stop(), player.dist * moveSpeed);
+    const handler = setTimeout(() => void stop(), player.dist * moveSpeed - crudeCoyoteTime);
     return () => void clearTimeout(handler);
   }, [player.dist, player.moving]);
 
