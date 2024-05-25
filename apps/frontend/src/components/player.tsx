@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, CSSProperties } from 'react';
 
 import { useStore, useDispatch } from '~/store';
 import { playerTurn } from '~/store/actions';
@@ -34,16 +34,15 @@ export function Player() {
     }
   });
 
-  const style = useMemo(
-    () => ({
+  const style = useMemo(() => {
+    return {
       '--px': player.pos.x,
       '--py': player.pos.y,
       '--dist': player.dist,
-    }),
-    [player]
-  );
+    } as CSSProperties;
+  }, [player]);
 
-  return <PlayerCircle data-type="player" css={style} />;
+  return <PlayerCircle data-type="player" style={style} />;
 }
 
 const controls = {
