@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
 import { styled } from '~/styles';
 import { useGlobalListener } from '~/utils/hooks/event-listener';
+import { mapData } from '~/data/map';
 
-const size = 16;
 const cellSize = '2rem';
-const mapData = new Array(size)
-  .fill(null)
-  .map(() => new Array(size).fill(null).map(() => ({ type: 'empty' as const })));
+const size = {
+  w: mapData[0].length,
+  h: mapData.length,
+};
 
 const controls = {
   up: 'w',
@@ -34,25 +35,33 @@ export function Map() {
 
     switch (ev.key.toLowerCase()) {
       case controls.alt.up:
-      case controls.up: {
-        updatePlayer(prev => ({ ...prev, y: clamp(prev.y - 1, 0, size - 1) }));
-        break;
-      }
+      case controls.up:
+        return void updatePlayer(prev => {
+          const next = { ...prev, y: clamp(prev.y - 1, 0, size.h - 1) };
+          if (mapData[next.y][next.x].type === 'empty') return next;
+          return prev;
+        });
       case controls.alt.right:
-      case controls.right: {
-        updatePlayer(prev => ({ ...prev, x: clamp(prev.x + 1, 0, size - 1) }));
-        break;
-      }
+      case controls.right:
+        return void updatePlayer(prev => {
+          const next = { ...prev, x: clamp(prev.x + 1, 0, size.w - 1) };
+          if (mapData[next.y][next.x].type === 'empty') return next;
+          return prev;
+        });
       case controls.alt.down:
-      case controls.down: {
-        updatePlayer(prev => ({ ...prev, y: clamp(prev.y + 1, 0, size - 1) }));
-        break;
-      }
+      case controls.down:
+        return void updatePlayer(prev => {
+          const next = { ...prev, y: clamp(prev.y + 1, 0, size.h - 1) };
+          if (mapData[next.y][next.x].type === 'empty') return next;
+          return prev;
+        });
       case controls.alt.left:
-      case controls.left: {
-        updatePlayer(prev => ({ ...prev, x: clamp(prev.x - 1, 0, size - 1) }));
-        break;
-      }
+      case controls.left:
+        return void updatePlayer(prev => {
+          const next = { ...prev, x: clamp(prev.x - 1, 0, size.w - 1) };
+          if (mapData[next.y][next.x].type === 'empty') return next;
+          return prev;
+        });
     }
   });
 
@@ -126,8 +135,8 @@ const EmptyCell = styled(CellBase, {
 });
 
 const WallCell = styled(EmptyCell, {
-  backgroundColor: '#eee',
-  border: '1px solid #e5e5e5',
+  backgroundColor: '#555',
+  border: '1px solid #505050',
 });
 
 type CellMap = {
