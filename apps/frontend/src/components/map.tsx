@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { styled } from '~/styles';
 
 const size = 16;
+const cellSize = '2rem';
 const mapData = new Array(size)
   .fill(null)
   .map(() => new Array(size).fill(null).map(() => ({ type: 'empty' as const })));
@@ -9,6 +10,7 @@ const mapData = new Array(size)
 export function Map() {
   return (
     <Grid>
+      <Player x={3} y={6} />
       {mapData.map((row, r) => (
         <Row key={r} id={`row-${r}`}>
           {row.map((cell, c) => (
@@ -20,17 +22,36 @@ export function Map() {
   );
 }
 
+type PlayerProps = { x: number; y: number };
+function Player(props: PlayerProps) {
+  const { x, y } = props;
+
+  const style = useMemo(() => ({ '--px': x, '--py': y }), [x, y]);
+
+  return <PlayerCircle data-type="player" css={style} />;
+}
+
+const PlayerCircle = styled('div', {
+  size: cellSize,
+  position: 'absolute',
+  borderRadius: '50%',
+  backgroundColor: 'red',
+  transition: 'transform 200ms linear',
+  transform: `translate(calc(var(--px) * ${cellSize}), calc(var(--py) * ${cellSize}))`,
+});
+
 const Grid = styled('div', {
+  position: 'relative',
   display: 'grid',
-  gridAutoRows: '2rem',
-  gridTemplateColumns: '2rem',
+  gridAutoRows: cellSize,
+  gridTemplateColumns: cellSize,
   gridAutoFlow: 'row',
 });
 
 const Row = styled('div', {
   display: 'grid',
-  gridTemplateRows: '2rem',
-  gridAutoColumns: '2rem',
+  gridTemplateRows: cellSize,
+  gridAutoColumns: cellSize,
   gridAutoFlow: 'column',
 });
 
