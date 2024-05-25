@@ -7,11 +7,16 @@ import { Tile } from './tiles';
 import { Player } from './player';
 
 export function GameMap() {
-  const { game, map } = useStore();
+  const { game, map, score } = useStore();
 
   return (
     <Grid>
-      {game.over && game.win && <CongratulationsBanner>You Won!</CongratulationsBanner>}
+      {game.over && game.win && (
+        <CongratulationsBanner>
+          <div>You Won!</div>
+          <div>score: {score.coins}</div>
+        </CongratulationsBanner>
+      )}
       <Player />
       {map.data.map((row, r) => (
         <Row key={r} id={`row-${r}`}>
@@ -30,11 +35,12 @@ const CongratulationsBanner = styled('div', {
   transform: 'translateY(-50%)',
   left: 0,
   right: 0,
-  height: '4rem',
+  height: '6rem',
   backgroundColor: 'black',
   color: 'white',
   fontWeight: 'bold',
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
 });

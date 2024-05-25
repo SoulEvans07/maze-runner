@@ -11,4 +11,9 @@ const raw: CellType[][] = [
   ['wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall'],
 ] as const;
 
-export const mapData: MapData = raw.map(r => r.map(c => ({ type: c })));
+export const mapData: MapData = raw.map(r =>
+  r.map(c => {
+    if (c === 'wall') return { type: c };
+    return { type: c, coin: 1 };
+  })
+);

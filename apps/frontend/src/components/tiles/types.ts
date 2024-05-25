@@ -4,10 +4,15 @@ import type { CSS } from '@stitches/react';
 export const CellBase = z.object({ type: z.string() });
 export type CellBase = z.infer<typeof CellBase>;
 
-export const EmptyCell = CellBase.extend({ type: z.literal('empty') });
+export const EmptyCell = CellBase.extend({
+  type: z.literal('empty'),
+  coin: z.number().default(0),
+});
 export type EmptyCell = z.infer<typeof EmptyCell>;
+
 export const WallCell = CellBase.extend({ type: z.literal('wall') });
 export type WallCell = z.infer<typeof WallCell>;
+
 export const GoalCell = CellBase.extend({ type: z.literal('goal') });
 export type GoalCell = z.infer<typeof GoalCell>;
 

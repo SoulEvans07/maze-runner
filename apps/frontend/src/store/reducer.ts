@@ -28,6 +28,15 @@ export function rootReducer(state: GameState, action: Action): GameState {
         draft.player.vel = direction[action.payload.dir];
         break;
       }
+      case 'maze.runner/score/coin': {
+        const { x, y } = action.payload.pos;
+        const cell = draft.map.data[y][x];
+        if (cell.type === 'empty') {
+          draft.score.coins += cell.coin;
+          cell.coin = 0;
+        }
+        break;
+      }
       case 'maze.runner/player/stop': {
         draft.player.vel = Vect2.zero;
         break;

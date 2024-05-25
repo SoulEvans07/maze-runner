@@ -3,12 +3,9 @@ import { TileProps } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function TileBase(props: TileProps<any>) {
-  const { children, x, y, css, data } = props;
+  const { children, css, data } = props;
   return (
     <Tile css={css} data-cell={data.type}>
-      <span>
-        [{x + 1}, {y + 1}]
-      </span>
       {children}
     </Tile>
   );

@@ -9,6 +9,7 @@ import { Map } from '~/model/map';
 
 export type GameState = {
   game: { over: boolean; win: boolean };
+  score: { coins: number };
   player: {
     pos: Pos;
     vel: Pos;
