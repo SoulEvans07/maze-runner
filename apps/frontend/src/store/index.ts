@@ -1,22 +1,23 @@
 import { create } from 'zustand';
 
-import { MapData } from '~/components/tiles/types';
 import { mapData } from '~/data/map';
+import { findGoal, getSize } from '~/model/map';
 import type { Action, GameState, StoreDispatch } from './types';
 import { rootReducer } from './reducer';
 
 type Store = GameState & { dispatch: StoreDispatch };
-export const useStore = create<Store>(set => ({
+export const useStore = create<Store>((set, _get) => ({
   // state
   game: { over: false, win: false },
   player: {
-    pos: { x: 0, y: 0 },
+    pos: { x: 1, y: 0 },
     dist: 0,
     moving: false,
   },
   map: {
     data: mapData,
     size: getSize(mapData),
+    goal: findGoal(mapData),
   },
 
   // dispatch
@@ -25,9 +26,4 @@ export const useStore = create<Store>(set => ({
   },
 }));
 
-function getSize(map: MapData) {
-  return {
-    w: map[0].length,
-    h: map.length,
-  };
-}
+export const useDispatch = () => useStore(s => s.dispatch);
