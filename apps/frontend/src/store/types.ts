@@ -11,8 +11,8 @@ export type GameState = {
   game: { over: boolean; win: boolean };
   player: {
     pos: Pos;
+    vel: Pos;
     dist: number;
-    moving: boolean;
   };
   map: Map;
 };

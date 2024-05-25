@@ -11,8 +11,8 @@ export const useStore = create<Store>((set, _get) => ({
   game: { over: false, win: false },
   player: {
     pos: { x: 1, y: 0 },
+    vel: { x: 0, y: 0 },
     dist: 0,
-    moving: false,
   },
   map: {
     data: mapData,

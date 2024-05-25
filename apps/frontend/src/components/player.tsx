@@ -1,42 +1,36 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useStore, useDispatch } from '~/store';
-import { playerDash, playerStop } from '~/store/actions';
+import { playerTurn } from '~/store/actions';
 import { useGlobalListener } from '~/utils/hooks/event-listener';
 import { cellSize } from '~/model/cell';
 import { styled } from '~/styles';
-
-const moveSpeed = 25; // per tile
-const crudeCoyoteTime = moveSpeed * 0.8;
+import { Vect2 } from '~/utils/vector';
+import { tickSpeed } from './engine';
 
 export function Player() {
   const gameOver = useStore(s => s.game.over);
   const player = useStore(s => s.player);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const handler = setTimeout(() => void dispatch(playerStop()), player.dist * moveSpeed - crudeCoyoteTime);
-    return () => void clearTimeout(handler);
-  }, [player.dist, player.moving]);
-
   useGlobalListener('keydown', ev => {
     if (gameOver) return;
-    if (player.moving) return;
+    if (!Vect2.eq(player.vel, Vect2.zero)) return;
     if (ev.repeat) return;
 
     switch (ev.key.toLowerCase()) {
       case controls.alt.up:
       case controls.up:
-        return void dispatch(playerDash('up'));
+        return void dispatch(playerTurn('up'));
       case controls.alt.right:
       case controls.right:
-        return void dispatch(playerDash('right'));
+        return void dispatch(playerTurn('right'));
       case controls.alt.down:
       case controls.down:
-        return void dispatch(playerDash('down'));
+        return void dispatch(playerTurn('down'));
       case controls.alt.left:
       case controls.left:
-        return void dispatch(playerDash('left'));
+        return void dispatch(playerTurn('left'));
     }
   });
 
@@ -72,7 +66,7 @@ const PlayerCircle = styled('div', {
   borderRadius: '50%',
   backgroundColor: 'red',
   transitionProperty: 'transform',
-  transitionDuration: `calc(var(--dist) * ${moveSpeed}ms)`,
+  transitionDuration: `calc(var(--dist) * ${tickSpeed}ms)`,
   transitionTimingFunction: 'linear',
   transform: `translate(calc(var(--px) * ${cellSize}), calc(var(--py) * ${cellSize}))`,
 });
