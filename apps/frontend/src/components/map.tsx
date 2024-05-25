@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
 
 import { styled } from '~/styles';
@@ -7,7 +7,7 @@ import { mapData } from '~/data/map';
 import { Tile } from './tiles';
 import { Cell, CellType } from './tiles/types';
 
-const animLength = 200;
+const moveSpeed = 50; // per tile
 
 type MapData = Cell[][];
 
@@ -70,47 +70,45 @@ function step(map: MapData, prev: Pos, dir: DirName): Pos {
   return next;
 }
 
-function dash(map: MapData, prev: Pos, dir: DirName): Pos {
+function dash(map: MapData, prev: Pos, dir: DirName, dist = 0): { pos: Pos; dist: number } {
   const next = {
     x: prev.x + directions[dir].x,
     y: prev.y + directions[dir].y,
   };
 
-  if (isOutOfBounds(next)) return prev;
-  if (isSolid(map[next.y][next.x])) return prev;
-  return dash(map, next, dir);
+  if (isOutOfBounds(next)) return { pos: prev, dist };
+  if (isSolid(map[next.y][next.x])) return { pos: prev, dist: dist + 1 };
+  return dash(map, next, dir, dist + 1);
 }
 
 export function Map() {
-  const [player, updatePlayer] = useState<PlayerProps>({ pos: { x: 1, y: 1 } });
+  const [player, updatePlayer] = useState<PlayerProps>({ pos: { x: 1, y: 1 }, dist: 0, moving: false });
+  const stop = () => updatePlayer(prev => ({ ...prev, moving: false }));
 
-  const playerController = useCallback(
-    _.throttle(
-      ev => {
-        if (ev.repeat) return;
+  useEffect(() => {
+    const handler = setTimeout(() => void stop(), player.dist * moveSpeed);
+    return () => void clearTimeout(handler);
+  }, [player.dist, player.moving]);
 
-        switch (ev.key.toLowerCase()) {
-          case controls.alt.up:
-          case controls.up:
-            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'up') }));
-          case controls.alt.right:
-          case controls.right:
-            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'right') }));
-          case controls.alt.down:
-          case controls.down:
-            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'down') }));
-          case controls.alt.left:
-          case controls.left:
-            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'left') }));
-        }
-      },
-      animLength,
-      { leading: true }
-    ),
-    []
-  );
+  useGlobalListener('keydown', ev => {
+    if (ev.repeat) return;
+    if (player.moving) return;
 
-  useGlobalListener('keydown', playerController);
+    switch (ev.key.toLowerCase()) {
+      case controls.alt.up:
+      case controls.up:
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'up') }));
+      case controls.alt.right:
+      case controls.right:
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'right') }));
+      case controls.alt.down:
+      case controls.down:
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'down') }));
+      case controls.alt.left:
+      case controls.left:
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'left') }));
+    }
+  });
 
   return (
     <Grid>
@@ -126,13 +124,14 @@ export function Map() {
   );
 }
 
-type PlayerProps = { pos: Pos };
+type PlayerProps = { pos: Pos; dist: number; moving: boolean };
 function Player(props: PlayerProps) {
   const {
     pos: { x, y },
+    dist,
   } = props;
 
-  const style = useMemo(() => ({ '--px': x, '--py': y }), [x, y]);
+  const style = useMemo(() => ({ '--px': x, '--py': y, '--dist': dist }), [x, y]);
 
   return <PlayerCircle data-type="player" css={style} />;
 }
@@ -142,7 +141,9 @@ const PlayerCircle = styled('div', {
   position: 'absolute',
   borderRadius: '50%',
   backgroundColor: 'red',
-  transition: `transform ${animLength}ms linear`,
+  transitionProperty: 'transform',
+  transitionDuration: `calc(var(--dist) * ${moveSpeed}ms)`,
+  transitionTimingFunction: 'linear',
   transform: `translate(calc(var(--px) * ${cellSize}), calc(var(--py) * ${cellSize}))`,
 });
 
