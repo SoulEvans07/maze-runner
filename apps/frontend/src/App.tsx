@@ -1,9 +1,9 @@
-import { Map } from '~/components/map';
+import { GameMap } from '~/components/map';
 
 function App() {
   return (
     <div>
-      <Map />
+      <GameMap />
     </div>
   );
 }

@@ -4,8 +4,11 @@ import _ from 'lodash';
 import { styled } from '~/styles';
 import { useGlobalListener } from '~/utils/hooks/event-listener';
 import { mapData } from '~/data/map';
+import { Pos } from '~/model/common';
 import { Tile } from './tiles';
-import type { Cell, CellType, MapData } from './tiles/types';
+import type { MapData } from './tiles/types';
+import { dash } from '~/model/player';
+import { Map } from '~/model/map';
 
 const moveSpeed = 25; // per tile
 const crudeCoyoteTime = moveSpeed * 0.8;
@@ -17,7 +20,7 @@ function getSize(map: MapData) {
   };
 }
 const cellSize = '2rem';
-const size = getSize(mapData);
+const map: Map = { data: mapData, size: getSize(mapData) };
 
 const controls = {
   up: 'w',
@@ -32,38 +35,6 @@ const controls = {
     left: 'ArrowLeft'.toLowerCase(),
   },
 };
-
-type Pos = { x: number; y: number };
-
-const directions = {
-  up: { x: 0, y: -1 },
-  right: { x: 1, y: 0 },
-  down: { x: 0, y: 1 },
-  left: { x: -1, y: 0 },
-} as const satisfies Record<string, { x: 1 | 0 | -1; y: 1 | 0 | -1 }>;
-type DirName = keyof typeof directions;
-
-const solids: CellType[] = ['wall'];
-function isSolid(cell: Cell) {
-  return solids.includes(cell.type);
-}
-
-function isOutOfBounds(pos: Pos) {
-  if (pos.x < 0 || pos.x >= size.w) return true;
-  if (pos.y < 0 || pos.y >= size.h) return true;
-  return false;
-}
-
-function dash(map: MapData, prev: Pos, dir: DirName, dist = 0): { pos: Pos; dist: number } {
-  const next = {
-    x: prev.x + directions[dir].x,
-    y: prev.y + directions[dir].y,
-  };
-
-  if (isOutOfBounds(next)) return { pos: prev, dist };
-  if (isSolid(map[next.y][next.x])) return { pos: prev, dist: dist + 1 };
-  return dash(map, next, dir, dist + 1);
-}
 
 function findGoal(map: MapData): Pos {
   for (let y = 0; y < map.length; y++) {
@@ -80,7 +51,7 @@ function findGoal(map: MapData): Pos {
 
 const goalPos = findGoal(mapData);
 
-export function Map() {
+export function GameMap() {
   const [player, updatePlayer] = useState<PlayerProps>({ pos: { x: 1, y: 1 }, dist: 0, moving: false });
   const stop = () => updatePlayer(prev => ({ ...prev, moving: false }));
 
@@ -97,16 +68,16 @@ export function Map() {
     switch (ev.key.toLowerCase()) {
       case controls.alt.up:
       case controls.up:
-        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'up') }));
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(map, prev.pos, 'up') }));
       case controls.alt.right:
       case controls.right:
-        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'right') }));
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(map, prev.pos, 'right') }));
       case controls.alt.down:
       case controls.down:
-        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'down') }));
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(map, prev.pos, 'down') }));
       case controls.alt.left:
       case controls.left:
-        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(mapData, prev.pos, 'left') }));
+        return void updatePlayer(prev => ({ ...prev, moving: true, ...dash(map, prev.pos, 'left') }));
     }
   });
 
@@ -169,7 +140,7 @@ const Grid = styled('div', {
   position: 'relative',
   display: 'grid',
   width: 'fit-content',
-  gridTemplateColumns: `calc(${size.h} * ${cellSize})`,
+  gridTemplateColumns: `calc(${map.size.h} * ${cellSize})`,
   gridAutoRows: cellSize,
   gridAutoFlow: 'row',
 });
