@@ -1,23 +1,23 @@
-import { css } from '~/styles';
-import { cn } from '~/utils/classnames';
+import { styled } from '~/styles';
 import { TileProps } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function TileBase(props: TileProps<any>) {
-  const { children, x, y, className, data } = props;
+  const { children, x, y, css, data } = props;
   return (
-    <div className={cn(tile(), className)} data-cell={data.type}>
+    <Tile css={css} data-cell={data.type}>
       <span>
         [{x + 1}, {y + 1}]
       </span>
       {children}
-    </div>
+    </Tile>
   );
 }
 
-const tile = css({
+const Tile = styled('div', {
   size: '2rem',
   color: 'black',
+  backgroundColor: '#eee',
   fontSize: '0.4rem',
   display: 'flex',
   alignItems: 'center',

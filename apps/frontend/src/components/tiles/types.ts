@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { CSS } from '@stitches/react';
 
 export const CellBase = z.object({ type: z.string() });
 export type CellBase = z.infer<typeof CellBase>;
@@ -14,7 +15,7 @@ export type CellType = Cell['type'];
 export type CellFor<T extends CellType> = Extract<Cell, { type: T }>;
 
 export type TileProps<T extends CellType> = React.PropsWithChildren<{
-  className?: string;
+  css?: CSS;
   x: number;
   y: number;
   data: CellFor<T>;
