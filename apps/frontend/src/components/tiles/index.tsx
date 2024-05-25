@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import type { CellComp, CellType, TileProps } from './types';
 import { EmptyTile } from './empty';
 import { WallTile } from './wall';
+import { GoalTile } from './goal';
 
 type TileMap = {
   [T in CellType]: CellComp<T>;
@@ -11,6 +12,7 @@ type TileMap = {
 const Tiles: TileMap = {
   empty: EmptyTile,
   wall: WallTile,
+  goal: GoalTile,
 };
 
 // NOTE: typescript is not clever enough for this, so here is a function...
