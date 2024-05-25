@@ -1,10 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import _ from 'lodash';
 
 import { styled } from '~/styles';
 import { useGlobalListener } from '~/utils/hooks/event-listener';
 import { mapData } from '~/data/map';
 import { Tile } from './tiles';
 import { Cell, CellType } from './tiles/types';
+
+const animLength = 200;
 
 type MapData = Cell[][];
 
@@ -81,24 +84,33 @@ function dash(map: MapData, prev: Pos, dir: DirName): Pos {
 export function Map() {
   const [player, updatePlayer] = useState<PlayerProps>({ pos: { x: 1, y: 1 } });
 
-  useGlobalListener('keydown', ev => {
-    if (ev.repeat) return;
+  const playerController = useCallback(
+    _.throttle(
+      ev => {
+        if (ev.repeat) return;
 
-    switch (ev.key.toLowerCase()) {
-      case controls.alt.up:
-      case controls.up:
-        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'up') }));
-      case controls.alt.right:
-      case controls.right:
-        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'right') }));
-      case controls.alt.down:
-      case controls.down:
-        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'down') }));
-      case controls.alt.left:
-      case controls.left:
-        return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'left') }));
-    }
-  });
+        switch (ev.key.toLowerCase()) {
+          case controls.alt.up:
+          case controls.up:
+            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'up') }));
+          case controls.alt.right:
+          case controls.right:
+            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'right') }));
+          case controls.alt.down:
+          case controls.down:
+            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'down') }));
+          case controls.alt.left:
+          case controls.left:
+            return void updatePlayer(prev => ({ ...prev, pos: dash(mapData, prev.pos, 'left') }));
+        }
+      },
+      animLength,
+      { leading: true }
+    ),
+    []
+  );
+
+  useGlobalListener('keydown', playerController);
 
   return (
     <Grid>
@@ -130,7 +142,7 @@ const PlayerCircle = styled('div', {
   position: 'absolute',
   borderRadius: '50%',
   backgroundColor: 'red',
-  transition: 'transform 200ms linear',
+  transition: `transform ${animLength}ms linear`,
   transform: `translate(calc(var(--px) * ${cellSize}), calc(var(--py) * ${cellSize}))`,
 });
 

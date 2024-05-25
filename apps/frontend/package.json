@@ -18,11 +18,13 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.4",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
