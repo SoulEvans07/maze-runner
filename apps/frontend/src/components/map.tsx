@@ -4,12 +4,18 @@ import { styled } from '~/styles';
 import { useGlobalListener } from '~/utils/hooks/event-listener';
 import { mapData } from '~/data/map';
 import { Tile } from './tiles';
+import { Cell, CellType } from './tiles/types';
 
+type MapData = Cell[][];
+
+function getSize(map: MapData) {
+  return {
+    w: map[0].length,
+    h: map.length,
+  };
+}
 const cellSize = '2rem';
-const size = {
-  w: mapData[0].length,
-  h: mapData.length,
-};
+const size = getSize(mapData);
 
 const controls = {
   up: 'w',
@@ -29,8 +35,33 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
+type Pos = { x: number; y: number };
+
+const directions = {
+  up: { x: 0, y: -1 },
+  right: { x: 1, y: 0 },
+  down: { x: 0, y: 1 },
+  left: { x: -1, y: 0 },
+} as const satisfies Record<string, { x: 1 | 0 | -1; y: 1 | 0 | -1 }>;
+type DirName = keyof typeof directions;
+
+const solids: CellType[] = ['wall'];
+function isSolid(cell: Cell) {
+  return solids.includes(cell.type);
+}
+
+function step(map: MapData, prev: Pos, dir: DirName): Pos {
+  const next = {
+    x: clamp(prev.x + directions[dir].x, 0, size.h - 1),
+    y: clamp(prev.y + directions[dir].y, 0, size.h - 1),
+  };
+
+  if (isSolid(map[next.y][next.x])) return prev;
+  return next;
+}
+
 export function Map() {
-  const [player, updatePlayer] = useState<PlayerProps>({ x: 1, y: 1 });
+  const [player, updatePlayer] = useState<PlayerProps>({ pos: { x: 1, y: 1 } });
 
   useGlobalListener('keydown', ev => {
     if (ev.repeat) return;
@@ -38,32 +69,16 @@ export function Map() {
     switch (ev.key.toLowerCase()) {
       case controls.alt.up:
       case controls.up:
-        return void updatePlayer(prev => {
-          const next = { ...prev, y: clamp(prev.y - 1, 0, size.h - 1) };
-          if (mapData[next.y][next.x].type === 'empty') return next;
-          return prev;
-        });
+        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'up') }));
       case controls.alt.right:
       case controls.right:
-        return void updatePlayer(prev => {
-          const next = { ...prev, x: clamp(prev.x + 1, 0, size.w - 1) };
-          if (mapData[next.y][next.x].type === 'empty') return next;
-          return prev;
-        });
+        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'right') }));
       case controls.alt.down:
       case controls.down:
-        return void updatePlayer(prev => {
-          const next = { ...prev, y: clamp(prev.y + 1, 0, size.h - 1) };
-          if (mapData[next.y][next.x].type === 'empty') return next;
-          return prev;
-        });
+        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'down') }));
       case controls.alt.left:
       case controls.left:
-        return void updatePlayer(prev => {
-          const next = { ...prev, x: clamp(prev.x - 1, 0, size.w - 1) };
-          if (mapData[next.y][next.x].type === 'empty') return next;
-          return prev;
-        });
+        return void updatePlayer(prev => ({ ...prev, pos: step(mapData, prev.pos, 'left') }));
     }
   });
 
@@ -81,9 +96,11 @@ export function Map() {
   );
 }
 
-type PlayerProps = { x: number; y: number };
+type PlayerProps = { pos: Pos };
 function Player(props: PlayerProps) {
-  const { x, y } = props;
+  const {
+    pos: { x, y },
+  } = props;
 
   const style = useMemo(() => ({ '--px': x, '--py': y }), [x, y]);
 
