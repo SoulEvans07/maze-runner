@@ -9,5 +9,7 @@ export function WallTile(props: TileProps<'wall'>) {
 
 const wall: CSS = {
   backgroundColor: '#555',
-  border: '1px solid #505050',
+  borderWidth: '4px',
+  borderStyle: 'solid',
+  borderColor: '#505050',
 };

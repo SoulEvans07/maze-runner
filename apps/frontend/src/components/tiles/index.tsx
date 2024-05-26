@@ -4,6 +4,7 @@ import type { CellComp, CellType, TileProps } from './types';
 import { EmptyTile } from './empty';
 import { WallTile } from './wall';
 import { GoalTile } from './goal';
+import { SpikeTile } from './spike';
 
 type TileMap = {
   [T in CellType]: CellComp<T>;
@@ -12,6 +13,7 @@ type TileMap = {
 const Tiles: TileMap = {
   empty: EmptyTile,
   wall: WallTile,
+  spike: SpikeTile,
   goal: GoalTile,
 };
 

@@ -14,6 +14,7 @@ export type GameState = {
     pos: Pos;
     vel: Pos;
     dist: number;
+    hp: number;
   };
   map: Map;
 };

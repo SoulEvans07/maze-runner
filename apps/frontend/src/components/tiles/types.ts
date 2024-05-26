@@ -13,10 +13,13 @@ export type EmptyCell = z.infer<typeof EmptyCell>;
 export const WallCell = CellBase.extend({ type: z.literal('wall') });
 export type WallCell = z.infer<typeof WallCell>;
 
+export const SpikeCell = CellBase.extend({ type: z.literal('spike') });
+export type SpikeCell = z.infer<typeof SpikeCell>;
+
 export const GoalCell = CellBase.extend({ type: z.literal('goal') });
 export type GoalCell = z.infer<typeof GoalCell>;
 
-export const Cell = z.discriminatedUnion('type', [EmptyCell, WallCell, GoalCell]);
+export const Cell = z.discriminatedUnion('type', [EmptyCell, WallCell, GoalCell, SpikeCell]);
 export type Cell = z.infer<typeof Cell>;
 export type CellType = Cell['type'];
 export type CellFor<T extends CellType> = Extract<Cell, { type: T }>;

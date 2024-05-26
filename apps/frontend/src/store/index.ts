@@ -6,7 +6,7 @@ import type { Action, GameState, StoreDispatch } from './types';
 import { rootReducer } from './reducer';
 
 type Store = GameState & { dispatch: StoreDispatch };
-export const useStore = create<Store>((set, _get) => ({
+export const useStore = create<Store>((set, get, _api) => ({
   // state
   game: { over: false, win: false },
   score: { coins: 0 },
@@ -14,6 +14,7 @@ export const useStore = create<Store>((set, _get) => ({
     pos: { x: 1, y: 0 },
     vel: { x: 0, y: 0 },
     dist: 0,
+    hp: 1,
   },
   map: {
     data: mapData,
@@ -23,7 +24,7 @@ export const useStore = create<Store>((set, _get) => ({
 
   // dispatch
   dispatch(action: Action) {
-    set(state => rootReducer(state, action));
+    set(state => rootReducer(state, action, { dispatch: get().dispatch }));
   },
 }));
 

@@ -11,11 +11,11 @@ export function GameMap() {
 
   return (
     <Grid>
-      {game.over && game.win && (
-        <CongratulationsBanner>
-          <div>You Won!</div>
+      {game.over && (
+        <GameOverBanner>
+          <div>{game.win ? 'You Won!' : 'Game Over!'}</div>
           <div>score: {score.coins}</div>
-        </CongratulationsBanner>
+        </GameOverBanner>
       )}
       <Player />
       {map.data.map((row, r) => (
@@ -29,7 +29,7 @@ export function GameMap() {
   );
 }
 
-const CongratulationsBanner = styled('div', {
+const GameOverBanner = styled('div', {
   position: 'absolute',
   top: '50%',
   transform: 'translateY(-50%)',

@@ -4,8 +4,11 @@ import type { Action, GameState } from './types';
 import { dash, dashNext } from '~/model/player';
 import { direction } from '~/model/common';
 import { Vect2 } from '~/utils/vector';
+import { gameOver } from './actions';
 
-export function rootReducer(state: GameState, action: Action): GameState {
+type StoreCtx = { dispatch: (action: Action) => void };
+
+export function rootReducer(state: GameState, action: Action, ctx: StoreCtx): GameState {
   return produce(state, draft => {
     switch (action.type) {
       case 'maze.runner/map/load': {
@@ -31,6 +34,7 @@ export function rootReducer(state: GameState, action: Action): GameState {
       case 'maze.runner/score/coin': {
         const { x, y } = action.payload.pos;
         const cell = draft.map.data[y][x];
+
         if (cell.type === 'empty') {
           draft.score.coins += cell.coin;
           cell.coin = 0;
@@ -42,12 +46,18 @@ export function rootReducer(state: GameState, action: Action): GameState {
         break;
       }
       case 'maze.runner/game/tick': {
+        if (draft.game.over) return;
+
         if (!Vect2.eq(draft.player.vel, Vect2.zero)) {
-          const { pos, vel } = dashNext(draft.map, draft.player.pos, draft.player.vel);
+          const { pos, vel, dmg } = dashNext(draft.map, draft.player.pos, draft.player.vel);
           draft.player.pos = pos;
           draft.player.vel = vel;
           draft.player.dist = Vect2.eq(vel, Vect2.zero) ? 0 : 1;
+
+          draft.player.hp -= dmg;
+          if (draft.player.hp <= 0) draft.game.over = true;
         }
+
         break;
       }
       default: {

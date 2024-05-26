@@ -1,4 +1,4 @@
-import { useMemo, CSSProperties } from 'react';
+import { useMemo, CSSProperties, useEffect } from 'react';
 
 import { useStore, useDispatch } from '~/store';
 import { playerTurn } from '~/store/actions';
@@ -33,6 +33,8 @@ export function Player() {
         return void dispatch(playerTurn('left'));
     }
   });
+
+  useEffect(() => {}, [player.hp]);
 
   const style = useMemo(() => {
     return {
