@@ -1,9 +1,9 @@
 import { Vect2 } from '~/utils/vector';
 import { direction, type Dir, type Pos } from './common';
-import { isOutOfBounds, type Map } from './map';
+import { isOutOfBounds, type MapData } from './map';
 import { isDamaging, isSolid } from './cell';
 
-export function dash(map: Map, prev: Pos, dir: Dir, dist = 0): { pos: Pos; dist: number } {
+export function dash(map: MapData, prev: Pos, dir: Dir, dist = 0): { pos: Pos; dist: number } {
   const next = Vect2.add(prev, direction[dir]);
 
   if (isOutOfBounds(map, next)) return { pos: prev, dist };
@@ -11,7 +11,7 @@ export function dash(map: Map, prev: Pos, dir: Dir, dist = 0): { pos: Pos; dist:
   return dash(map, next, dir, dist + 1);
 }
 
-export function dashNext(map: Map, prev: Pos, vel: Pos): { pos: Pos; vel: Pos; dmg: number } {
+export function dashNext(map: MapData, prev: Pos, vel: Pos): { pos: Pos; vel: Pos; dmg: number } {
   const next = Vect2.add(prev, vel);
 
   if (isOutOfBounds(map, next)) return { pos: prev, vel: Vect2.zero, dmg: 0 };

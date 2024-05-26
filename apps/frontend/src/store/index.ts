@@ -29,6 +29,9 @@ export const useStore = create<Store>((set, _get, _api) => ({
   dispatch(action: Action) {
     set(state => rootReducer(state, action));
   },
+
+  // actions
+  update() {},
 }));
 
 export const useDispatch = () => useStore(s => s.dispatch);

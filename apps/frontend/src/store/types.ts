@@ -5,7 +5,7 @@ export type Action = ActionType<typeof actions>;
 export type StoreDispatch = React.Dispatch<Action>;
 
 import { Pos } from '~/model/common';
-import { Map } from '~/model/map';
+import { MapData } from '~/model/map';
 
 export type GameState = {
   game: { over: boolean; win: boolean };
@@ -19,5 +19,5 @@ export type GameState = {
     dist: number;
     hp: number;
   };
-  map: Map;
+  map: MapData;
 };

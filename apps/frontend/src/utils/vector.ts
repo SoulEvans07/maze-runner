@@ -14,4 +14,9 @@ export class Vect2 {
   }
 
   static zero: Pos = { x: 0, y: 0 };
+
+  static up: Pos = { x: 0, y: -1 };
+  static right: Pos = { x: 1, y: 0 };
+  static down: Pos = { x: 0, y: 1 };
+  static left: Pos = { x: -1, y: 0 };
 }

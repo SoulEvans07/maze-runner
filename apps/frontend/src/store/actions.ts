@@ -1,9 +1,9 @@
 import { action } from 'typesafe-actions';
-import { MapData } from '~/components/tiles/types';
 
 import { Dir, Pos } from '~/model/common';
+import { MapGrid } from '~/model/map';
 
-export const loadMap = (map: MapData) => action('maze.runner/map/load', { map });
+export const loadMap = (map: MapGrid) => action('maze.runner/map/load', { map });
 
 export const playerDash = (dir: Dir) => action('maze.runner/player/dash', { dir });
 export const playerTurn = (dir: Dir) => action('maze.runner/player/turn', { dir });

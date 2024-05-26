@@ -32,5 +32,3 @@ export type TileProps<T extends CellType> = React.PropsWithChildren<{
 }>;
 
 export type CellComp<T extends CellType> = React.FC<TileProps<T>>;
-
-export type MapData = Cell[][];
