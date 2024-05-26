@@ -4,11 +4,8 @@ import type { Action, GameState } from './types';
 import { dash, dashNext } from '~/model/player';
 import { direction } from '~/model/common';
 import { Vect2 } from '~/utils/vector';
-import { gameOver } from './actions';
 
-type StoreCtx = { dispatch: (action: Action) => void };
-
-export function rootReducer(state: GameState, action: Action, ctx: StoreCtx): GameState {
+export function rootReducer(state: GameState, action: Action): GameState {
   return produce(state, draft => {
     switch (action.type) {
       case 'maze.runner/map/load': {
