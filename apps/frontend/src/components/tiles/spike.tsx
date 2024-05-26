@@ -25,12 +25,11 @@ export function SpikeTile(props: TileProps<'spike'>) {
 }
 
 function shouldConnect(cell?: Cell) {
-  return cell?.type === 'spike';
+  return cell === undefined || cell.type === 'wall' || cell.type === 'spike';
 }
 
 const spike: CSS = {
-  backgroundColor: '#0071ff',
-  borderColor: '#00eeff',
+  borderColor: '#E93D82',
   borderStyle: 'dashed',
   borderTopWidth: '4px',
   borderRightWidth: '4px',

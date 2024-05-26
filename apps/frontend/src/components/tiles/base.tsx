@@ -12,9 +12,10 @@ export function TileBase(props: TileProps<any>) {
 }
 
 const Tile = styled('div', {
+  position: 'relative',
   size: '2rem',
   color: 'black',
-  backgroundColor: '#eee',
+  backgroundColor: 'var(--base-color)',
   fontSize: '0.4rem',
   display: 'flex',
   alignItems: 'center',

@@ -25,12 +25,11 @@ export function WallTile(props: TileProps<'wall'>) {
 }
 
 function shouldConnect(cell?: Cell) {
-  return cell?.type === 'wall';
+  return cell === undefined || cell.type === 'wall' || cell.type === 'spike';
 }
 
 const wall: CSS = {
-  backgroundColor: '#363A3F',
-  borderColor: '#272A2D',
+  borderColor: '#104D87', // '#23AFD0',
   borderStyle: 'solid',
   borderTopWidth: '4px',
   borderRightWidth: '4px',

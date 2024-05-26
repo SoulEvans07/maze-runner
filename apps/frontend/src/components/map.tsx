@@ -12,7 +12,7 @@ export function GameMap() {
   return (
     <Grid>
       {game.over && (
-        <GameOverBanner>
+        <GameOverBanner win={game.win}>
           <div>{game.win ? 'You Won!' : 'Game Over!'}</div>
           <div>score: {score.coins}</div>
           <div>steps: {score.steps}</div>
@@ -32,18 +32,25 @@ export function GameMap() {
 
 const GameOverBanner = styled('div', {
   position: 'absolute',
+  zIndex: 10,
   top: '50%',
   transform: 'translateY(-50%)',
   left: 0,
   right: 0,
   height: '6rem',
-  backgroundColor: 'black',
-  color: 'white',
+  color: 'var(--base-color)',
   fontWeight: 'bold',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+
+  variants: {
+    win: {
+      true: { backgroundColor: '#0BD8B6' },
+      false: { backgroundColor: '#E5484D' },
+    },
+  },
 });
 
 const Grid = styled('div', {

@@ -1,15 +1,21 @@
 import { GameMap } from '~/components/map';
 import { GameScore } from './components/score';
 import { GameEngine } from './components/engine';
+import { styled } from './styles';
 
-function App() {
+export default function App() {
   return (
-    <div>
+    <Centered>
       <GameEngine />
       <GameScore />
       <GameMap />
-    </div>
+    </Centered>
   );
 }
 
-export default App;
+const Centered = styled('div', {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+});

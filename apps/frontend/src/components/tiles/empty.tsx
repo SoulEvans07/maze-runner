@@ -33,5 +33,5 @@ const empty: CSS = {};
 const Coin = styled('div', {
   size: '0.5rem',
   backgroundColor: 'orange',
-  borderRadius: '50%',
+  // borderRadius: '50%',
 });

@@ -9,4 +9,10 @@
   font-weight: 400;
 
   color-scheme: light dark;
+
+  --base-color: #121212;
+}
+
+body {
+  background-color: var(--base-color);
 }

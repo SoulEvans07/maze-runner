@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 
-import { mapData } from '~/data/map';
+import { map2 } from '~/data/map';
 import { findGoal, getSize } from '~/model/map';
 import type { Action, GameState, StoreDispatch } from './types';
 import { rootReducer } from './reducer';
+
+const map = map2;
 
 type Store = GameState & { dispatch: StoreDispatch };
 export const useStore = create<Store>((set, _get, _api) => ({
@@ -14,15 +16,15 @@ export const useStore = create<Store>((set, _get, _api) => ({
     steps: 0,
   },
   player: {
-    pos: { x: 1, y: 0 },
+    pos: map.playerPos,
     vel: { x: 0, y: 0 },
     dist: 0,
     hp: 1,
   },
   map: {
-    data: mapData,
-    size: getSize(mapData),
-    goal: findGoal(mapData),
+    data: map.data,
+    size: getSize(map.data),
+    goal: findGoal(map.data),
   },
 
   // dispatch

@@ -62,10 +62,14 @@ const controls = {
 };
 
 const PlayerCircle = styled('div', {
+  zIndex: 1,
   size: cellSize,
   position: 'absolute',
-  borderRadius: '50%',
-  backgroundColor: 'red',
+  borderRadius: '2px',
+  backgroundColor: '#3DD68C',
+  borderColor: '#30A46C',
+  borderStyle: 'solid',
+  borderWidth: '4px',
   transitionProperty: 'transform',
   transitionDuration: `calc(var(--dist) * ${tickSpeed}ms)`,
   transitionTimingFunction: 'linear',
