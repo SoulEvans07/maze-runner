@@ -9,7 +9,10 @@ type Store = GameState & { dispatch: StoreDispatch };
 export const useStore = create<Store>((set, get, _api) => ({
   // state
   game: { over: false, win: false },
-  score: { coins: 0 },
+  score: {
+    coins: 0,
+    steps: 0,
+  },
   player: {
     pos: { x: 1, y: 0 },
     vel: { x: 0, y: 0 },

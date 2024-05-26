@@ -15,6 +15,7 @@ export function GameMap() {
         <GameOverBanner>
           <div>{game.win ? 'You Won!' : 'Game Over!'}</div>
           <div>score: {score.coins}</div>
+          <div>steps: {score.steps}</div>
         </GameOverBanner>
       )}
       <Player />

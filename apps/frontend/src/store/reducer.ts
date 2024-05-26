@@ -29,6 +29,7 @@ export function rootReducer(state: GameState, action: Action, ctx: StoreCtx): Ga
       }
       case 'maze.runner/player/turn': {
         draft.player.vel = direction[action.payload.dir];
+        draft.score.steps++;
         break;
       }
       case 'maze.runner/score/coin': {
