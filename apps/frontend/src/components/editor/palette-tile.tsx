@@ -57,7 +57,7 @@ const ButtonContainer = styled('div', {
   [after]: {
     content: '',
     position: 'absolute',
-    bottom: 0,
+    top: 0,
     left: '50%',
     transform: 'translateX(-50%)',
     width: '0rem',

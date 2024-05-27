@@ -21,16 +21,12 @@ export function EditorPalette() {
     <Palette style={{ width: `calc(${map.size.w} * 2rem)` }}>
       <PaletteRow></PaletteRow>
       <PaletteRow>
-        <div>Palette</div>
-        <ToolRow>
-          <TileRow>
-            {palette.map(item => (
-              <PaletteTile {...item} key={item.name} />
-            ))}
-          </TileRow>
-          <Separator />
-          <button onClick={handleExport}>export</button>
-        </ToolRow>
+        <TileRow>
+          {palette.map(item => (
+            <PaletteTile {...item} key={item.name} />
+          ))}
+        </TileRow>
+        <button onClick={handleExport}>export</button>
       </PaletteRow>
     </Palette>
   );
