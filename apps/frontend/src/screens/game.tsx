@@ -1,10 +1,10 @@
-import { styled } from './styles';
+import { styled } from '~/styles';
+import { GameEngine } from '~/components/engine';
 import { GameMap } from '~/components/map';
-import { GameScore } from './components/score';
-import { GameEngine } from './components/engine';
-import { GameStatus } from './components/status';
+import { GameScore } from '~/components/score';
+import { GameStatus } from '~/components/status';
 
-export default function App() {
+export function GameScreen() {
   return (
     <Centered>
       <GameEngine />
