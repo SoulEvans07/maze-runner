@@ -1,7 +1,8 @@
+import { styled } from './styles';
 import { GameMap } from '~/components/map';
 import { GameScore } from './components/score';
 import { GameEngine } from './components/engine';
-import { styled } from './styles';
+import { GameStatus } from './components/status';
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <GameEngine />
       <GameScore />
       <GameMap />
+      <GameStatus />
     </Centered>
   );
 }

@@ -37,3 +37,6 @@ export const useStore = create<Store>((set, _get, _api) => ({
 }));
 
 export const useDispatch = () => useStore(s => s.dispatch);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).$store = () => useStore.getState();

@@ -50,3 +50,24 @@ export function getNeighbors(map: MapData, pos: Pos) {
 
   return { top, right, bottom, left };
 }
+
+export function inBetweenCells(pos: Pos) {
+  return !Number.isInteger(pos.x) || !Number.isInteger(pos.y);
+}
+
+export function getNextCell(map: MapData, pos: Pos, vel: Pos) {
+  const intPos = {
+    x: vel.x >= 0 ? Math.floor(pos.x) : Math.ceil(pos.x),
+    y: vel.y >= 0 ? Math.floor(pos.y) : Math.ceil(pos.y),
+  };
+  const intVel = {
+    x: vel.x >= 0 ? Math.ceil(vel.x) : Math.floor(vel.x),
+    y: vel.y >= 0 ? Math.ceil(vel.y) : Math.floor(vel.y),
+  };
+
+  const nextPos = Vect2.add(intPos, intVel);
+  return { cell: map.data[nextPos.y][nextPos.x], pos: nextPos };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).getNextCell = getNextCell;

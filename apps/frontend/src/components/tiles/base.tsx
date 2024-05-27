@@ -3,9 +3,9 @@ import { TileProps } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function TileBase(props: TileProps<any>) {
-  const { children, css, data } = props;
+  const { children, css, data, x, y } = props;
   return (
-    <Tile css={css} data-cell={data.type}>
+    <Tile css={css} data-cell={data.type} data-x={x} data-y={y}>
       {children}
     </Tile>
   );

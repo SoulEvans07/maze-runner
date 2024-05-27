@@ -4,6 +4,7 @@ import type { Action, GameState } from './types';
 import { dash, dashNext } from '~/model/player';
 import { direction } from '~/model/common';
 import { Vect2 } from '~/utils/vector';
+import { playerSpeed } from '~/components/engine';
 
 export function rootReducer(state: GameState, action: Action): GameState {
   return produce(state, draft => {
@@ -25,7 +26,7 @@ export function rootReducer(state: GameState, action: Action): GameState {
         break;
       }
       case 'maze.runner/player/turn': {
-        draft.player.vel = direction[action.payload.dir];
+        draft.player.vel = Vect2.scale(direction[action.payload.dir], playerSpeed);
         draft.score.steps++;
         break;
       }

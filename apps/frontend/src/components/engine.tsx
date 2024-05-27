@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { useDispatch, useStore } from '~/store';
 import { gameTick } from '~/store/actions';
 
-export const tickSpeed = 50;
+export const tickSpeed = 20;
+export const playerSpeed = tickSpeed / 80;
 
 export function GameEngine() {
   const dispatch = useDispatch();

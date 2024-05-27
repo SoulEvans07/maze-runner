@@ -9,6 +9,13 @@ export class Vect2 {
     return { x: a.x * s, y: a.y * s };
   }
 
+  static round(a: Pos): Pos {
+    return {
+      x: Number(a.x.toFixed(2)),
+      y: Number(a.y.toFixed(2)),
+    };
+  }
+
   static eq(a: Pos, b: Pos) {
     return a.x === b.x && a.y === b.y;
   }
