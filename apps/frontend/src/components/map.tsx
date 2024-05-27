@@ -6,7 +6,8 @@ import { cellSize } from '~/model/cell';
 import { Tile } from './tiles';
 import { Player } from './player';
 
-export function GameMap() {
+type GameMapProps = { edit?: boolean };
+export function GameMap(props: GameMapProps) {
   const { game, map, score } = useStore();
 
   return (
@@ -22,7 +23,7 @@ export function GameMap() {
       {map.data.map((row, r) => (
         <Row key={r} id={`row-${r}`}>
           {row.map((cell, c) => (
-            <Tile key={`${r}-${c}`} data={cell} x={c} y={r} />
+            <Tile key={`${r}-${c}`} data={cell} x={c} y={r} edit={props.edit} />
           ))}
         </Row>
       ))}

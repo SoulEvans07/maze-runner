@@ -1,17 +1,19 @@
 import { styled } from '~/styles';
 import { GameEngine } from '~/components/engine';
 import { GameMap } from '~/components/map';
-import { GameScore } from '~/components/score';
-import { GameStatus } from '~/components/status';
+import { EditorPalette } from '~/components/editor/palette';
+import { EditorStatus } from '~/components/editor/status';
 
-export function GameScreen() {
+export function MapEditorScreen() {
   return (
-    <Centered>
+    <>
       <GameEngine />
-      <GameScore />
-      <GameMap />
-      <GameStatus />
-    </Centered>
+      <Centered>
+        <EditorStatus />
+        <GameMap edit />
+        <EditorPalette />
+      </Centered>
+    </>
   );
 }
 

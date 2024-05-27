@@ -15,15 +15,9 @@ export function dashNext(map: MapData, prev: Pos, vel: Pos): { pos: Pos; vel: Po
   const next = Vect2.round(Vect2.add(prev, vel));
   if (isOutOfBounds(map, next)) return { pos: prev, vel: Vect2.zero, dmg: 0 };
 
-  const { cell: nextCell, pos: nextPos } = getNextCell(map, prev, vel);
-  if (isDamaging(nextCell)) {
-    console.log('dmg', { ...prev }, { ...vel }, Vect2.round(nextPos), { ...nextCell });
-    return { pos: prev, vel: Vect2.zero, dmg: 1 };
-  }
-  if (isSolid(nextCell)) {
-    console.log('solid', { ...prev }, { ...vel }, Vect2.round(nextPos), { ...nextCell });
-    return { pos: prev, vel: Vect2.zero, dmg: 0 };
-  }
+  const { cell: nextCell } = getNextCell(map, prev, vel);
+  if (isDamaging(nextCell)) return { pos: prev, vel: Vect2.zero, dmg: 1 };
+  if (isSolid(nextCell)) return { pos: prev, vel: Vect2.zero, dmg: 0 };
 
   return { pos: next, vel, dmg: 0 };
 }

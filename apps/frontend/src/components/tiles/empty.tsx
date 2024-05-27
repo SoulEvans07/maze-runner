@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import type { CSS } from '@stitches/react';
 
 import type { TileProps } from './types';
 import { TileBase } from './base';
 import { styled } from '~/styles';
 import { useStore, useDispatch } from '~/store';
 import { pickupCoin } from '~/store/actions';
+import { tileStyle } from './styles';
 
 export function EmptyTile(props: TileProps<'empty'>) {
   const {
@@ -22,15 +22,13 @@ export function EmptyTile(props: TileProps<'empty'>) {
   }, [playerPos, x, y]);
 
   return (
-    <TileBase {...props} css={{ ...props.css, ...empty }}>
-      {coin > 0 && <Coin />}
+    <TileBase {...props} css={{ ...props.css, ...tileStyle.empty }}>
+      {coin > 0 && <Coin data-type="coin" />}
     </TileBase>
   );
 }
 
-const empty: CSS = {};
-
-const Coin = styled('div', {
+export const Coin = styled('div', {
   size: '0.5rem',
   backgroundColor: 'orange',
   // borderRadius: '50%',

@@ -1,26 +1,6 @@
 import { useMemo } from 'react';
 
-import type { CellComp, CellType, TileProps } from './types';
-import { EmptyTile } from './empty';
-import { WallTile } from './wall';
-import { GoalTile } from './goal';
-import { SpikeTile } from './spike';
-
-type TileMap = {
-  [T in CellType]: CellComp<T>;
-};
-
-const Tiles: TileMap = {
-  empty: EmptyTile,
-  wall: WallTile,
-  spike: SpikeTile,
-  goal: GoalTile,
-};
-
-// NOTE: typescript is not clever enough for this, so here is a function...
-function getCellComp<T extends CellType>(type: T): CellComp<T> {
-  return Tiles[type];
-}
+import { getCellComp, type TileProps } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Tile(props: TileProps<any>) {

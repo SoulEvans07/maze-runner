@@ -13,6 +13,15 @@ export function rootReducer(state: GameState, action: Action): GameState {
         draft.map.data = action.payload.map;
         break;
       }
+      case 'maze.runner/edit/palette/change': {
+        draft.editor.palette.cell = action.payload.cell;
+        break;
+      }
+      case 'maze.runner/edit/map': {
+        const { x, y } = action.payload.pos;
+        draft.map.data[y][x] = draft.editor.palette.cell;
+        break;
+      }
       case 'maze.runner/game/over': {
         draft.game.over = true;
         draft.game.win = action.payload.win;

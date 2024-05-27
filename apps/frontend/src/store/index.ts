@@ -4,6 +4,7 @@ import { map2 } from '~/data/map';
 import { findGoal, getSize } from '~/model/map';
 import type { Action, GameState, StoreDispatch } from './types';
 import { rootReducer } from './reducer';
+import { Cell } from '~/components/tiles/types';
 
 const map = map2;
 
@@ -25,6 +26,11 @@ export const useStore = create<Store>((set, _get, _api) => ({
     data: map.data,
     size: getSize(map.data),
     goal: findGoal(map.data),
+  },
+  editor: {
+    palette: {
+      cell: { type: 'empty', coin: 0 },
+    },
   },
 
   // dispatch

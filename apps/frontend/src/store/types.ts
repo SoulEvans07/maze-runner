@@ -6,6 +6,7 @@ export type StoreDispatch = React.Dispatch<Action>;
 
 import { Pos } from '~/model/common';
 import { MapData } from '~/model/map';
+import { Cell } from '~/components/tiles/types';
 
 export type GameState = {
   game: { over: boolean; win: boolean };
@@ -20,4 +21,9 @@ export type GameState = {
     hp: number;
   };
   map: MapData;
+  editor: {
+    palette: {
+      cell: Cell;
+    };
+  };
 };
