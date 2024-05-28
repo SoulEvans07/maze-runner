@@ -5,6 +5,7 @@ import { dash, dashNext } from '~/model/player';
 import { direction } from '~/model/common';
 import { Vect2 } from '~/utils/vector';
 import { playerSpeed } from '~/components/engine';
+import { findGoal } from '~/model/map';
 
 export function rootReducer(state: GameState, action: Action): GameState {
   return produce(state, draft => {
@@ -18,8 +19,14 @@ export function rootReducer(state: GameState, action: Action): GameState {
         break;
       }
       case 'maze.runner/edit/map': {
-        const { x, y } = action.payload.pos;
-        draft.map.data[y][x] = draft.editor.palette.cell;
+        const { pos } = action.payload;
+        draft.map.data[pos.y][pos.x] = draft.editor.palette.cell;
+
+        if (draft.editor.palette.cell.type === 'goal') {
+          const { goal } = draft.map;
+          draft.map.data[goal.y][goal.x] = { type: 'empty', coin: 0 };
+          draft.map.goal = findGoal(draft.map.data); // P3: turn into subscription
+        }
         break;
       }
       case 'maze.runner/game/over': {
@@ -63,7 +70,7 @@ export function rootReducer(state: GameState, action: Action): GameState {
           draft.player.dist = Vect2.eq(vel, Vect2.zero) ? 0 : 1;
 
           draft.player.hp -= dmg;
-          if (draft.player.hp <= 0) draft.game.over = true;
+          if (draft.player.hp <= 0) draft.game.over = true; // P3: turn into subscription or move it to Player
         }
 
         break;

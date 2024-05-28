@@ -7,6 +7,7 @@ const palette: PaletteItem[] = [
   { name: 'coin', cell: { type: 'empty', coin: 1 } },
   { name: 'wall', cell: { type: 'wall' } },
   { name: 'spike', cell: { type: 'spike' } },
+  { name: 'goal', cell: { type: 'goal' } },
 ];
 
 export function EditorPalette() {
