@@ -16,8 +16,12 @@ export function GoalTile(props: TileProps<'goal'>) {
     if (playerPos.x === x && playerPos.y === y) dispatch(gameOver(true));
   }, [playerPos, x, y]);
 
+  return <GoalTileComp {...props} />;
+}
+
+export function GoalTileComp(props: TileProps<'goal'>) {
   return (
-    <TileBase {...props} css={props.css}>
+    <TileBase {...props}>
       <Base>
         <Inner>
           <Center>

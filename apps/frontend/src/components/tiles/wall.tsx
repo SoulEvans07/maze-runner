@@ -5,7 +5,6 @@ import type { Cell, TileProps } from './types';
 import { TileBase } from './base';
 import { useStore } from '~/store';
 import { getNeighbors } from '~/model/map';
-import { tileStyle } from './styles';
 
 export function WallTile(props: TileProps<'wall'>) {
   const { x, y } = props;
@@ -22,12 +21,25 @@ export function WallTile(props: TileProps<'wall'>) {
     };
   }, [map, x, y]);
 
-  return <TileBase {...props} css={{ ...props.css, ...tileStyle.wall, ...connectedTexture }} />;
+  return <WallTileComp {...props} css={{ ...connectedTexture, ...props.css }} />;
+}
+
+export function WallTileComp(props: TileProps<'wall'>) {
+  return <TileBase {...props} css={{ ...wallStyle, ...props.css }} />;
 }
 
 function shouldConnect(cell?: Cell) {
   return cell === undefined || cell.type === 'wall' || cell.type === 'spike';
 }
+
+const wallStyle: CSS = {
+  borderColor: '#104D87',
+  borderStyle: 'solid',
+  borderTopWidth: '4px',
+  borderRightWidth: '4px',
+  borderBottomWidth: '4px',
+  borderLeftWidth: '4px',
+};
 
 const clearTop: CSS = { borderTopWidth: '0px' };
 const clearRight: CSS = { borderRightWidth: '0px' };

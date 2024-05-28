@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import type { CSS } from '@stitches/react';
 
-import { EmptyTile } from './empty';
-import { WallTile } from './wall';
-import { GoalTile } from './goal';
-import { SpikeTile } from './spike';
+import { EmptyTile, EmptyTileComp } from './empty';
+import { WallTile, WallTileComp } from './wall';
+import { GoalTile, GoalTileComp } from './goal';
+import { SpikeTile, SpikeTileComp } from './spike';
 
 export const CellBase = z.object({ type: z.string() });
 export type CellBase = z.infer<typeof CellBase>;
@@ -40,18 +40,19 @@ export type TileProps<T extends CellType> = React.PropsWithChildren<{
 
 export type CellComp<T extends CellType> = React.FC<TileProps<T>>;
 
+type TileCells<T extends CellType> = { cell: CellComp<T>; pure: CellComp<T> };
 type TileMap = {
-  [T in CellType]: CellComp<T>;
+  [T in CellType]: TileCells<T>;
 };
 
 export const Tiles: TileMap = {
-  empty: EmptyTile,
-  wall: WallTile,
-  spike: SpikeTile,
-  goal: GoalTile,
+  empty: { cell: EmptyTile, pure: EmptyTileComp },
+  wall: { cell: WallTile, pure: WallTileComp },
+  spike: { cell: SpikeTile, pure: SpikeTileComp },
+  goal: { cell: GoalTile, pure: GoalTileComp },
 };
 
 // NOTE: typescript is not clever enough for this, so here is a function...
-export function getCellComp<T extends CellType>(type: T): CellComp<T> {
+export function getCellComp<T extends CellType>(type: T): TileCells<T> {
   return Tiles[type];
 }

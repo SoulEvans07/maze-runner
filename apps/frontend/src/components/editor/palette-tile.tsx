@@ -2,27 +2,28 @@ import { useMemo } from 'react';
 import _ from 'lodash';
 
 import { useDispatch, useStore } from '~/store';
-import { css, styled } from '~/styles';
-import { tileStyle } from '../tiles/styles';
-import type { Cell } from '../tiles/types';
-import { Coin } from '../tiles/empty';
+import { styled } from '~/styles';
+import { getCellComp, type Cell } from '../tiles/types';
 import { changePalette } from '~/store/actions';
 import { cn } from '~/utils/classnames';
 
-export type PaletteItem = { name: keyof typeof tileStyle; cell: Cell };
+export type PaletteItem = { name: string; cell: Cell };
 export function PaletteTile(props: PaletteItem) {
+  const { name, cell } = props;
+
   const dispatch = useDispatch();
   const current = useStore(s => s.editor.palette.cell);
-  const { name, cell } = props;
 
   const isSelected = useMemo(() => _.isEqual(cell, current), [current, cell]);
 
   const handleClick = () => dispatch(changePalette(cell));
 
+  const Comp = useMemo(() => getCellComp(cell.type).pure, [cell.type]);
+
   return (
     <ButtonContainer className={cn({ selected: isSelected })} onClick={handleClick}>
-      <TileBtnBase css={tileStyle[name]} title={name}>
-        {name === 'coin' && <Coin data-type="coin" />}
+      <TileBtnBase title={name}>
+        <Comp data={cell} x={-1} y={-1} />
       </TileBtnBase>
     </ButtonContainer>
   );
@@ -44,7 +45,7 @@ const TileBtnBase = styled('div', {
     content: '',
     position: 'absolute',
     inset: 0,
-    borderWidth: '1px',
+    borderWidth: '2px',
     borderColor: '#ffffff28',
     borderStyle: 'dashed',
   },

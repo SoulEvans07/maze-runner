@@ -25,7 +25,6 @@ const Tile = styled('div', {
   position: 'relative',
   size: '2rem',
   color: 'black',
-  backgroundColor: 'var(--base-color)',
   fontSize: '0.4rem',
   display: 'flex',
   alignItems: 'center',

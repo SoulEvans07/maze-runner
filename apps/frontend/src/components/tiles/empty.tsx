@@ -5,14 +5,9 @@ import { TileBase } from './base';
 import { styled } from '~/styles';
 import { useStore, useDispatch } from '~/store';
 import { pickupCoin } from '~/store/actions';
-import { tileStyle } from './styles';
 
 export function EmptyTile(props: TileProps<'empty'>) {
-  const {
-    data: { coin },
-    x,
-    y,
-  } = props;
+  const { x, y } = props;
 
   const playerPos = useStore(s => s.player.pos);
   const dispatch = useDispatch();
@@ -21,11 +16,11 @@ export function EmptyTile(props: TileProps<'empty'>) {
     if (playerPos.x === x && playerPos.y === y) dispatch(pickupCoin({ x, y }));
   }, [playerPos, x, y]);
 
-  return (
-    <TileBase {...props} css={{ ...props.css, ...tileStyle.empty }}>
-      {coin > 0 && <Coin data-type="coin" />}
-    </TileBase>
-  );
+  return <EmptyTileComp {...props} />;
+}
+
+export function EmptyTileComp(props: TileProps<'empty'>) {
+  return <TileBase {...props}>{props.data.coin > 0 && <Coin data-type="coin" />}</TileBase>;
 }
 
 export const Coin = styled('div', {
