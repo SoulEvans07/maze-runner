@@ -20,6 +20,8 @@ export function rootReducer(state: GameState, action: Action): GameState {
       }
       case 'maze.runner/edit/map': {
         const { pos } = action.payload;
+        if (draft.map.data[pos.y][pos.x].type === 'goal') return draft;
+
         draft.map.data[pos.y][pos.x] = draft.editor.palette.cell;
 
         if (draft.editor.palette.cell.type === 'goal') {
