@@ -1,12 +1,11 @@
 import { create } from 'zustand';
 
-import { map2 } from '~/data/map';
+import { map3 } from '~/data/map';
 import { findGoal, getSize } from '~/model/map';
 import type { Action, GameState, StoreDispatch } from './types';
 import { rootReducer } from './reducer';
-import { Cell } from '~/components/tiles/types';
 
-const map = map2;
+const map = map3;
 
 type Store = GameState & { dispatch: StoreDispatch };
 export const useStore = create<Store>((set, _get, _api) => ({
